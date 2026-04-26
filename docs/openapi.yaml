@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Simple User API
+  title: Simple User API12
   description: API для управления пользователями
   version: 1.0.0
   license:
