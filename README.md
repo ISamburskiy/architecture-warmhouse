@@ -46,7 +46,7 @@
 
 Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
 
-[AS IS Context Diagram](https://github.com/ISamburskiy/architecture-warmhouse/blob/a391b67af4f6bf952f4a208fdbde68b63732e778/diagrams/AS_IS/context/context.png)
+[AS IS Context Diagram](https://github.com/ISamburskiy/architecture-warmhouse/blob/warmhouse/diagrams/AS_IS/context/context.png)
 
 
 Замените `Текст ссылки` текстом, который хотите использовать для ссылки. Вместо `URL` вставьте адрес, на который должна вести ссылка. Например:
