@@ -83,7 +83,7 @@
 
 ### 2. Документация API
 
-Здесь приложите ссылки на документацию API для микросервисов, которые вы спроектировали в первой части проектной работы. Для документирования используйте Swagger/OpenAPI или AsyncAPI.
+[Документация](https://isamburskiy.github.io/architecture-warmhouse/api/)
 
 # Задание 5. Работа с docker и docker-compose
 
