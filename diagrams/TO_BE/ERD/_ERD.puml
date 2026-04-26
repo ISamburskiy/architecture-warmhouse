@@ -1,0 +1,25 @@
+@startuml qwe
+
+entity "Customer" as C {
+  * id : INT {PK}
+  --
+  * name : VARCHAR
+  * email : VARCHAR
+}
+
+entity "Order" as O {
+  * id : INT {PK}
+  * date : DATE
+  * cust_id : INT {FK}
+}
+
+entity "Product" as P {
+  * id : INT {PK}
+  * name : VARCHAR
+  * price : DECIMAL
+}
+
+C ||--o{ O : "places"
+O ||--o{ P : "includes"
+
+@enduml
