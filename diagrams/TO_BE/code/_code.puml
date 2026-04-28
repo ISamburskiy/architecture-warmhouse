@@ -1,13 +1,67 @@
-@startuml qwe
+@startuml Code Diagram for AsyncHandler
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
-Person(user, "User", "A user of the fitness club system")
-Person(admin, "Administrator", "An administrator managing the system")
-System(FitLifeSystem, "FitLife System", "System managing memberships, schedules, and payments")
 
-System_Ext(api, "Third-Party API", "External API for fitness data integration", "Uses REST API, JSON data format")
-System_Ext(bank, "Bank System", "External bank for processing payments", "Uses SOAP, XML data format")
-Rel(user, FitLifeSystem, "Uses the system")
-Rel(admin,FitLifeSystem,"Manages the system")
-Rel(FitLifeSystem,api,"Fetches fitness data")
-Rel(FitLifeSystem,bank,"Processes payments")
-@enduml 
+skinparam linetype polyline
+skinparam ArrowColor Black
+skinparam ArrowThickness 2
+skinparam nodesep 80
+skinparam ranksep 50
+scale 1.2
+
+title Code Diagram for AsyncHandler (MaD Service)
+LAYOUT_WITH_LEGEND()
+
+
+' Основной класс обработчика асинхронных сообщений
+class MessageProcessor {
+  - messageQueue: Queue<DeviceMessage>
+  - telemetryService: TelemetryService
+  + processIncomingMessage(message: DeviceMessage): ProcessingResult
+  + validateMessageFormat(message: String): boolean
+  + routeMessageToScenarioEngine(message: DeviceMessage): void
+}
+
+' Сервис для работы с телеметрией
+class TelemetryService {
+  - storage: ITelemetryRepository
+  + saveTelemetryData(data: TelemetryData): void
+  + getRecentTelemetry(deviceId: String, hours: int): List<TelemetryData>
+  + detectAnomalies(data: List<TelemetryData>): AnomalyReport
+}
+
+' Интерфейс репозитория для сохранения телеметрии
+interface ITelemetryRepository {
+  + save(telemetry: TelemetryData): void
+  + findByDeviceId(deviceId: String, from: DateTime, to: DateTime): List<TelemetryData>
+}
+
+' Модель данных — сообщение от устройства
+class DeviceMessage {
+  + deviceId: String
+  + timestamp: DateTime
+  + payload: Map<String, Object>
+  + messageType: MessageType
+  + validate(): boolean
+}
+
+' Модель данных — телеметрия
+class TelemetryData {
+  + deviceId: String
+  + sensorType: String
+  + value: double
+  + unit: String
+  + recordedAt: DateTime
+}
+
+' Связи между классами
+MessageProcessor --> TelemetryService : uses
+MessageProcessor --> DeviceMessage : processes
+TelemetryService --> ITelemetryRepository : implements
+TelemetryService --> TelemetryData : uses
+
+' Невидимые связи для выравнивания элементов на диаграмме
+MessageProcessor -[hidden]right- TelemetryService
+TelemetryService -[hidden]right- ITelemetryRepository
+DeviceMessage -[hidden]down- TelemetryData
+
+@enduml

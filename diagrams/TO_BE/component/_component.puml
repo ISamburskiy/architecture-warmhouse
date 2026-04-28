@@ -1,13 +1,59 @@
-@startuml qwe
+@startuml component_dia
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
-Person(user, "User", "A user of the fitness club system")
-Person(admin, "Administrator", "An administrator managing the system")
-System(FitLifeSystem, "FitLife System", "System managing memberships, schedules, and payments")
+LAYOUT_WITH_LEGEND()
 
-System_Ext(api, "Third-Party API", "External API for fitness data integration", "Uses REST API, JSON data format")
-System_Ext(bank, "Bank System", "External bank for processing payments", "Uses SOAP, XML data format")
-Rel(user, FitLifeSystem, "Uses the system")
-Rel(admin,FitLifeSystem,"Manages the system")
-Rel(FitLifeSystem,api,"Fetches fitness data")
-Rel(FitLifeSystem,bank,"Processes payments")
+top to bottom direction
+skinparam linetype polyline
+skinparam ArrowColor Black
+skinparam ArrowThickness 2
+
+
+title Component Diagram for MaDService (Modules and Devices Service)
+LAYOUT_WITH_LEGEND()
+
+
+' Основной сервис — контейнер
+Container(MaDService, "MaD Service", "Service for modules and devices management and communication")
+
+' Компоненты внутри MaDService
+Container_Boundary(MaDService, "MaD Service", "Service for modules and devices management and communication") {
+Component(ScenarioEngine, "Scenario Engine", "Internal logic for creating scenarios and tasks")
+Component(SyncHandler, "Sync Handler", "Handles synchronous interaction with MaDService")
+Component(DBAdpater, "DB Adpater", "Performs MaD Service and DB interaction")
+Component(AsyncHandler, "Async Handler", "Handles asynchronous interaction with MaDService")
+}
+' Внешние зависимости
+Container(CustMobBFF, "BFF for customer mobile app", "Provides REST API and gathers data for Customer Mobile App")
+Container(CustWebBFF, "BFF for customer Web app", "Provides REST API and gathers data for Customer Web App")
+Container(MQBroker, "MQBroker", "Rabbit MQ for async communications")
+Container(NotificationService, "Notification Service", "Sends notification requests to external services")
+ContainerDb(MaDDB, "MaDDB", "PostgreSQL", "Stores MaD info")
+Container(Module, "Module", "Operates devices")
+
+' Связи компонентов внутри сервиса
+Rel_U(SyncHandler, ScenarioEngine, "Calls Scenario Engine")
+Rel_U(AsyncHandler, ScenarioEngine, "Calls scenario Engine")
+Rel_U(ScenarioEngine, DBAdpater, "Updates scenarios with device data")
+Rel_U(ScenarioEngine, AsyncHandler, "Creates notification request")
+
+' Внешние связи MaDService
+Rel(CustMobBFF, SyncHandler, "User-initiated tasks / scenarios", "HTTPS/REST")
+Rel(CustWebBFF, SyncHandler, "User-initiated tasks / scenarios", "HTTPS/REST")
+Rel(AsyncHandler, MQBroker, "Sends notification request", "AMQP")
+Rel(MQBroker, AsyncHandler, "Sends module-initiated tasks", "AMQP")
+Rel(ScenarioEngine, Module, "Sends tasks", "HTTPS/REST")
+Rel(Module, MQBroker, "Creates module-initiated tasks", "AMQP")
+Rel(MQBroker, NotificationService, "Sends notification requests", "AMQP")
+Rel(DBAdpater, MaDDB, "Reads/writes scenarios, tasks, device & module data", "JDBC")
+
+' Невидимые связи для улучшения компоновки и уменьшения пересечений
+
+SyncHandler -[hidden]down- ScenarioEngine
+ScenarioEngine -[hidden]down- DBAdpater
+DBAdpater -[hidden]right- AsyncHandler
+CustMobBFF -[hidden]down- CustWebBFF
+CustWebBFF -[hidden]left- SyncHandler
+AsyncHandler -[hidden]right- MQBroker
+MQBroker -[hidden]right- NotificationService
+
 @enduml 
