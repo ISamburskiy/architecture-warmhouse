@@ -1,0 +1,14 @@
+$kind: http-request
+description: Update a sensor's value and status
+url: http://localhost:8080/api/v1/sensors/1/value
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "value": 22.5,
+        "status": "active"
+    }
+order: 7000

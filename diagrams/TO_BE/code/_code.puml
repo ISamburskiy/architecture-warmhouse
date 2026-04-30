@@ -1,0 +1,36 @@
+@startuml Code Diagram for AsyncHandler
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+skinparam linetype polyline
+skinparam ArrowColor Black
+skinparam ArrowThickness 2
+skinparam nodesep 80
+skinparam ranksep 50
+scale 1.2
+
+title Code Diagram for AsyncHandler (MaD Service)
+
+' Основной класс обработчика асинхронных сообщений
+class MessageProcessor {
+  - messageQueue: Queue<ModuleMessage>
+  - telemetryService: TelemetryService
+  + processIncomingMessage(message: DeviceMessage): ProcessingResult
+  + validateMessageFormat(message: String): boolean
+  + routeMessageToScenarioEngine(message: DeviceMessage): void
+}
+
+
+' Модель данных — сообщение от устройства
+class ModuleMessage {
+  + moduleId: String
+  + deviceId: String
+  + timestamp: DateTime
+  + payload: Map<String, Object>
+  + messageType: MessageType
+  + validate(): boolean
+}
+
+' Связи между классами
+MessageProcessor --> ModuleMessage : processes
+
+@enduml

@@ -1,0 +1,4 @@
+$kind: collection
+description: A collection for testing the Smart Home Sensor Management API
+variables:
+  baseUrl: http://localhost:8080

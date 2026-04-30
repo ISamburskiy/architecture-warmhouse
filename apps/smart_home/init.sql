@@ -1,5 +1,5 @@
 -- Create the database if it doesn't exist
-CREATE DATABASE smarthome;
+--CREATE DATABASE IF NOT EXISTS smarthome;
 
 -- Connect to the database
 \c smarthome;

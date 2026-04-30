@@ -1,0 +1,83 @@
+@startuml container_dia
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+left to right direction
+skinparam linetype ortho
+skinparam ArrowColor Black
+skinparam ArrowThickness 2
+skinparam nodesep 120
+skinparam ranksep 90
+scale 1.6
+
+title Container Diagram for Smart Home Temperature Control System
+
+Person(customer, "Customer", "SmartHome customer who monitors and controls modules and devices")
+Person(support, "CustomerSupport", "SmartHome employee, supports customers, manages tickets")
+
+
+System_Boundary(CustApp, "Customer interface applications") {
+  Container(CwebApp, "Web Application", "Customer interface for module and devices management")
+  Container(CmobApp, "Mobile Application", "Mobile App customer interface for module and devices management")
+}
+System_Boundary(SuppApp, "Support interface applications") {
+  Container(SwebApp, "Web Application", "Support team app for customer support and managing tickets")
+}
+System_Boundary(BE, "Backend") {
+  Container(CustMobBFF, "BFF for customer mobile app", "Provides REST API and gathers data for Customer Mobile App")
+  Container(CustWebBFF, "BFF for customer Web app", "Provides REST API and gathers data for Customer Web App")
+  Container(SuppWebBFF, "BFF for support Web app", "Provides REST API and gathers data for Support Web App")
+  Container(MQBroker, "MQBroker", "Rabbit MQ for async communications")
+  Container(userService, "User Service", "Service for user management, registration, authorization etc")
+  Container(MaDService, "MaD service", "Service for modules and devices management and communication")
+  Container(TicketService, "Ticket Service", "Service for tickets and customer support interaction")
+  Container(NotificationService, "NotificationService", "Service for notification creation")
+}
+
+System_Boundary(DB, "Database"){
+  ContainerDb(UsersDB, "UsersDB", "PostgreSQL", "Stores user info")
+  ContainerDb(TicketsDB, "TicketsDB", "PostgreSQL", "Stores ticket info")
+  ContainerDb(MaDDB, "MaDDB", "PostgreSQL", "Stores MaD info")
+}
+
+System_Boundary(ModClheader, "Module client") {
+  Container(ModCl, "Module client", "Module client for communication with server")
+}
+
+System_Ext(externalPush, "Push sender", "Push sender service")
+System_Ext(externalEMail, "EMail sender", "EMail sender service")
+System_Ext(externalSMS, "SMS sender", "SMS sender service")
+System_Ext(device, "Devices", "Devices connected to module")
+
+
+Rel(customer, CustApp, "")
+Rel(support, SuppApp, "")
+BiRel(CmobApp, CustMobBFF, "", "HTTPS/REST")
+BiRel(CwebApp, CustWebBFF, "", "HTTPS/REST")
+BiRel(SwebApp, SuppWebBFF, "", "HTTPS/REST")
+BiRel(CustMobBFF, userService, "", "HTTPS/REST")
+BiRel(CustWebBFF, userService, "", "HTTPS/REST")
+BiRel(SuppWebBFF, userService, "", "HTTPS/REST")
+BiRel(CustMobBFF, MaDService, "", "HTTPS/REST")
+BiRel(CustWebBFF, MaDService, "", "HTTPS/REST")
+BiRel(SuppWebBFF, TicketService, "Manage tickets", "HTTPS/REST + WebSocket")
+BiRel(CustMobBFF, TicketService, "Manage tickets", "HTTPS/REST + WebSocket")
+BiRel(CustWebBFF, TicketService, "Manage tickets", "HTTPS/REST + WebSocket")
+BiRel(MaDService, ModCl, "Sync interation", "HTTPS/REST")
+Rel(ModCl, MQBroker, "MSG to MaD", "AMQP")
+Rel(MQBroker, MaDService, "MSG from modules to MaD", "AMQP")
+Rel(MaDService, MQBroker, "Notifications", "AMQP")
+Rel(MQBroker, NotificationService, "Notifications", "AMQP")
+Rel(MaDService, MaDDB, "", "JDBC")
+Rel(userService, UsersDB, "", "JDBC")
+Rel(TicketService, TicketsDB, "", "JDBC")
+Rel(NotificationService, externalPush, "")
+Rel(NotificationService, externalSMS, "")
+Rel(NotificationService, externalEMail, "")
+BiRel(ModCl, device, "interaction")
+
+CustWebBFF --[hidden]down-- SuppWebBFF
+CustMobBFF --[hidden]-- userService
+CustMobBFF --[hidden]-- TicketService
+
+
+@enduml 

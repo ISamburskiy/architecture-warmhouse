@@ -1,0 +1,16 @@
+$kind: http-request
+description: Update an existing sensor
+url: http://localhost:8080/api/v1/sensors/1
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+        "name": "Updated Living Room Temperature",
+        "type": "temperature",
+        "location": "Living Room",
+        "unit": "°C"
+    }
+order: 5000

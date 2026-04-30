@@ -1,0 +1,24 @@
+@startuml context_dia
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+top to bottom direction
+skinparam linetype ortho
+skinparam ArrowColor Black
+skinparam ArrowThickness 2
+
+Person(Cust, "Customer", "SmartHome customer")
+
+System(WA, "WebApplication", "Web Application for customer interface")
+System(SH, "SmartHome", "Temperature control system")
+
+Person(TechEmp, "TechEmp", "SmartHome Technical employee")
+
+System_Ext(sensor, "TemperatureSensor", "Temperature sensor installed in a house")
+
+
+Rel(Cust, WA, "Manages temperature data")
+Rel(WA, SH, "Transfers user actions", "HTTPS/REST API")
+Rel(TechEmp,SH,"Manages devices")
+Rel(SH,sensor,"Fetches temperature data")
+
+@enduml 
