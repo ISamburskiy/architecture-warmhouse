@@ -1,0 +1,134 @@
+asyncapi: 2.6.0
+info:
+  title: Notification Service API
+  version: 1.0.0
+  description: |
+    API для отправки уведомлений пользователям через разные каналы:
+    - email
+    - push
+    - SMS
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: API Support Team
+    email: api-support@company.com
+    url: https://company.com/api-docs
+
+servers:
+  production:
+    url: kafka://kafka-prod:9092
+    protocol: kafka
+    description: Production Kafka cluster
+    security:
+      - oauth2: [publish, subscribe]
+  development:
+    url: localhost:9092
+    protocol: kafka
+    description: Local Kafka for development
+    security:
+      - plain: []
+
+channels:
+  user.notifications:
+    description: |
+      Канал для отправки персональных уведомлений пользователям.
+      Сообщения публикуются сервисами, подписываются потребителями уведомлений.
+    publish:
+      summary: Send user notification
+      operationId: sendUserNotification
+      message:
+        $ref: '#/components/messages/UserNotification'
+      traits:
+        - $ref: '#/components/operationTraits/kafkaDefaults'
+    subscribe:
+      summary: Receive user notifications
+      operationId: receiveUserNotification
+      message:
+        $ref: '#/components/messages/UserNotification'
+
+  device.message:
+    description: |
+      Канал для сообщений, инициируемых устройствами
+    publish:
+      summary: Send device message
+      operationId: sendDeviceMessage
+      message:
+        $ref: '#/components/messages/deviceMessage'
+    subscribe:
+      summary: Receive system alerts
+      operationId: receivedeviceMessage
+      message:
+        $ref: '#/components/messages/deviceMessage'
+
+components:
+  messages:
+    UserNotification:
+      name: UserNotification
+      title: User Notification
+      summary: Notification sent to a user
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - userId
+          - type
+          - title
+        properties:
+          userId:
+            type: string
+            format: uuid
+            description: ID пользователя
+          type:
+            type: string
+            enum:
+              - email
+              - push
+              - sms
+            description: Тип уведомления
+          title:
+            type: string
+            description: Заголовок уведомления
+          body:
+            type: string
+            description: Текст уведомления
+          metadata:
+            type: object
+            additionalProperties: true
+            description: Дополнительные метаданные
+    deviceMessage:
+      name: deviceMessage
+      title: device Message
+      summary: Message sent from device to Modules and Devices server
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - deviceId
+          - messageDate
+          - messagePayload
+        properties:
+          deviceId:
+            type: deviceId
+            format: guid
+            description: ID устройства
+          messageDate:
+            type: string
+            format: date-time
+          messagePayload:
+            type: json-object
+            description: сообщение от устройства
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          description: Код ошибки
+        message:
+          type: string
+          description: Описание ошибки
