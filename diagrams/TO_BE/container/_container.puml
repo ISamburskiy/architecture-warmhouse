@@ -10,7 +10,6 @@ skinparam ranksep 90
 scale 1.6
 
 title Container Diagram for Smart Home Temperature Control System
-LAYOUT_WITH_LEGEND()
 
 Person(customer, "Customer", "SmartHome customer who monitors and controls modules and devices")
 Person(support, "CustomerSupport", "SmartHome employee, supports customers, manages tickets")

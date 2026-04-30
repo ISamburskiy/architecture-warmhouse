@@ -9,7 +9,6 @@ skinparam ArrowThickness 2
 
 
 title Component Diagram for MaDService (Modules and Devices Service)
-LAYOUT_WITH_LEGEND()
 
 
 ' Основной сервис — контейнер

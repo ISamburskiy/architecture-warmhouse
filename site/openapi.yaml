@@ -1,59 +1,111 @@
 openapi: 3.0.3
 info:
-  title: Simple User API
-  description: API для управления пользователями
+  title: Smart Home API
+  description: API smartHome
   version: 1.0.0
   license:
     name: Not Licensed
-    url: https://example.com/license 
+    url: https://smarthome.com/license 
   contact:
     name: API Support
-    email: support@example.com
+    email: support@smarthome.com
 servers:
   - url: https://localhost:8080/api
     description: Локальный сервер разработки
-  - url: https://api.example.com/v1
+  - url: https://api.smarthome.com/v1
     description: Production serv
 
 paths:
-  /users:
+  /devices/{houseId}:
     get:
-      summary: Получить список всех пользователей
-      description: Возвращает массив пользователей с основной информацией
-      operationId: getUsers
+      summary: Получение устройств по помещению
+      parameters:
+        - name: deviceTypeId
+          in: query
+          description: Фильтрует устройства по типу
+          schema:
+            type: string
+            format: guid
+        - name: locationId
+          in: query
+          description: Фильтрует устройства по местоположению внутри помещения
+          schema:
+            type: string
+            format: guid
+      description: Получение устройств по помещению
+      operationId: get_devicesByHouse
       responses:
         '200':
-          description: Успешный ответ — список пользователей
+          description: Успешный ответ — список устройств
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
-        '500':
-          description: Внутренняя ошибка сервера
+                  $ref: '#/components/schemas/Device'
+        '404':
+          description: Не удалось получить список устройств
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+  /tasks:
+    get:
+      summary: Получение задач
+      description: Получение задач
+      parameters:
+        - name: deviceTaskTypeId
+          in: query
+          description: фильтрует задачи по типу
+          schema:
+            type: string
+            format: guid
+        - name: deviceId
+          in: query
+          description: фильтрует задачи по устройству
+          schema:
+            type: string
+            format: guid
+        - name: scenarioId
+          in: query
+          description: фильтрует задачи по сценарию
+          schema:
+            type: string
+            format: guid
+      operationId: get_tasks
+      responses:
+        '200':
+          description: Успешный ответ — список задач
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '404':
+          description: Не удалось получить список задач
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /Scenarios:
     post:
-      summary: Создать нового пользователя
-      description: Добавляет нового пользователя в систему
-      operationId: createUser
+      summary: Создать новый сценарий
+      description: Создает сценарий, включающий одну или более задачу для устройства
+      operationId: post_createScenario
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserInput'
+              $ref: '#/components/schemas/Scenario'
       responses:
         '201':
           description: Пользователь успешно создан
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Scenario'
         '400':
           description: Неверные данные для создания пользователя
           content:
@@ -66,42 +118,85 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
 components:
   schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 123
-        name:
-          type: string
-          example: "Иван Иванов"
-        email:
-          type: string
-          format: email
-          example: "ivan@example.com"
-        createdAt:
-          type: string
-          format: date-time
-          example: "2023-01-15T10:30:00Z"
-
-    UserInput:
+    Device:
       type: object
       required:
+        - deviceTypeId
         - name
-        - email
+        - houseId
       properties:
+        id:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+        deviceTypeId:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
         name:
           type: string
-          maxLength: 100
-          description: Полное имя пользователя
-        email:
+          example: "Автоматические ворота № 2"
+        houseId:
           type: string
-          format: email
-          description: Email пользователя
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+        locationId:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+    Task:
+      type: object
+      required:
+        - scenarioId
+        - deviceId
+        - status
+      properties:
+        id:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+        scenarioId:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+        deviceId:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+        status:
+          type: integer
+          example: 1
+        completionDate:
+          type: string
+          format: date-time
+          example: 2025-01-15T11:30:45.123Z
+        taskResult:
+          type: string
+          format: text
+          example: 18
+    Scenario:
+      type: object
+      required:
+        - userId
+        - name
+      properties:
+        id:
+          type: string
+          format: guid
+          example: 761fcfc2-d173-45f6-9ef1-1221d1c590c0
+        name:
+          type: string
+          format: guid
+          example: Открытие автоматических ворот
+        status:
+          type: integer
+          example: 1
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
 
     Error:
       type: object

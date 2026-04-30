@@ -3,7 +3,7 @@ hide circle
 skinparam linetype ortho
 left to right direction
 
-title Entity-Relationship Diagram: Examples of Different Relationship Types
+title Entity-Relationship Diagram
 
 ' Сущности с атрибутами
 
@@ -72,7 +72,7 @@ entity "Device" as device {
   --
   deviceType: deviceType
   name : string 
-  status : int 
+  status : string 
 }
 
 entity "Scenario" as scenario {
@@ -94,6 +94,7 @@ entity "DeviceTask" as task {
   dueDate : datetime2
   completionDate : datetime2 (null)
   error: text (null)
+  taskResult: text
 }
 
 entity "UserScenarioTemplates" as scenarioTemplates {

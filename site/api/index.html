@@ -81,7 +81,7 @@
               </ul>
             </li>
             
-            <li class="nav-item" data-bs-level="1"><a href="#simple-user-api-100" class="nav-link">Simple User API 1.0.0</a>
+            <li class="nav-item" data-bs-level="1"><a href="#smart-home-api-100" class="nav-link">Smart Home API 1.0.0</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#servers" class="nav-link">Servers</a>
               <ul class="nav flex-column">
@@ -110,11 +110,11 @@ https://github.com/Neoteroi/essentials-openapi
 Most likely, it is not desirable to edit this file by hand!
 -->
 
-<h1 id="simple-user-api-100">Simple User API 1.0.0</h1>
-<p>API для управления пользователями</p>
+<h1 id="smart-home-api-100">Smart Home API 1.0.0</h1>
+<p>API smartHome</p>
 <hr />
-<p><strong>Contact:</strong> API Support support@example.com</p>
-<p><strong>License:</strong> <a href="https://example.com/license">Not Licensed</a></p>
+<p><strong>Contact:</strong> API Support support@smarthome.com</p>
+<p><strong>License:</strong> <a href="https://smarthome.com/license">Not Licensed</a></p>
 <h2 id="servers">Servers</h2>
 <table>
 <thead>
@@ -130,23 +130,53 @@ Most likely, it is not desirable to edit this file by hand!
 </tr>
 <tr>
 <td>Production serv</td>
-<td>https://api.example.com/v1</td>
+<td>https://api.smarthome.com/v1</td>
 </tr>
 </tbody>
 </table>
 <h2 id="endpoints">Endpoints</h2>
-<h3 id="get-users">GET /users</h3>
-<p>Получить список всех пользователей</p>
-<p><strong>Description</strong>
-Возвращает массив пользователей с основной информацией</p>
+<h3 id="get-deviceshouseid">GET /devices/{houseId}</h3>
+<p>Получение устройств по помещению</p>
+<p><strong>Input parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>In</th>
+<th>Type</th>
+<th>Default</th>
+<th>Nullable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>deviceTypeId</td>
+<td>query</td>
+<td>string</td>
+<td></td>
+<td>No</td>
+<td>Фильтрует устройства по типу</td>
+</tr>
+<tr>
+<td>locationId</td>
+<td>query</td>
+<td>string</td>
+<td></td>
+<td>No</td>
+<td>Фильтрует устройства по местоположению внутри помещения</td>
+</tr>
+</tbody>
+</table>
 <h3 id="response-200-ok">Response 200 OK</h3>
 <p><strong>application/json</strong></p>
 <p><div class="highlight"><pre><span></span><code><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Иван Иванов&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ivan@example.com&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-15T10:30:00Z&quot;</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;deviceTypeId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Автоматические ворота № 2&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;houseId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;locationId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
@@ -155,11 +185,11 @@ Most likely, it is not desirable to edit this file by hand!
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/components/schemas/User&quot;</span>
+<span class="w">        </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/components/schemas/Device&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="response-500-internal-server-error">Response 500 Internal Server Error</h3>
+<h3 id="response-404-not-found">Response 404 Not Found</h3>
 <p><strong>application/json</strong></p>
 <p><div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
@@ -182,46 +212,74 @@ Most likely, it is not desirable to edit this file by hand!
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="post-users">POST /users</h3>
-<p>Создать нового пользователя</p>
-<p><strong>Description</strong>
-Добавляет нового пользователя в систему</p>
-<p><strong>Request body</strong></p>
+<h3 id="get-tasks">GET /tasks</h3>
+<p>Получение задач</p>
+<p><strong>Input parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>In</th>
+<th>Type</th>
+<th>Default</th>
+<th>Nullable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>deviceId</td>
+<td>query</td>
+<td>string</td>
+<td></td>
+<td>No</td>
+<td>фильтрует задачи по устройству</td>
+</tr>
+<tr>
+<td>deviceTaskTypeId</td>
+<td>query</td>
+<td>string</td>
+<td></td>
+<td>No</td>
+<td>фильтрует задачи по типу</td>
+</tr>
+<tr>
+<td>scenarioId</td>
+<td>query</td>
+<td>string</td>
+<td></td>
+<td>No</td>
+<td>фильтрует задачи по сценарию</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-200-ok_1">Response 200 OK</h3>
 <p><strong>application/json</strong></p>
-<p><div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;derp@meme.org&quot;</span>
-<span class="p">}</span>
+<p><div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;scenarioId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;deviceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;completionDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T11:30:45.123000+00:00&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;taskResult&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">]</span>
 </code></pre></div>
 <em>This example has been generated automatically from the schema and it is not accurate. Refer to the schema for more information.</em></p>
-<p><strong>Schema of the request body</strong></p>
+<p><strong>Schema of the response body</strong></p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;email&quot;</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;maxLength&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Полное имя пользователя&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Email пользователя&quot;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/components/schemas/Task&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="response-201-created">Response 201 Created</h3>
+<h3 id="response-404-not-found_1">Response 404 Not Found</h3>
 <p><strong>application/json</strong></p>
 <p><div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Иван Иванов&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ivan@example.com&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-15T10:30:00Z&quot;</span>
+<span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
 <em>This example has been generated automatically from the schema and it is not accurate. Refer to the schema for more information.</em></p>
@@ -229,24 +287,117 @@ Most likely, it is not desirable to edit this file by hand!
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Код ошибки&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Человеко‑читаемое описание ошибки&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="post-scenarios">POST /Scenarios</h3>
+<p>Создать новый сценарий</p>
+<p><strong>Description</strong>
+Создает сценарий, включающий одну или более задачу для устройства</p>
+<p><strong>Request body</strong></p>
+<p><strong>application/json</strong></p>
+<p><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Открытие автоматических ворот&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;scenarioId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;deviceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;completionDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T11:30:45.123000+00:00&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;taskResult&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<em>This example has been generated automatically from the schema and it is not accurate. Refer to the schema for more information.</em></p>
+<p><strong>Schema of the request body</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;userId&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;name&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int64&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;guid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span>
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Иван Иванов&quot;</span>
+<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;guid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Открытие автоматических ворот&quot;</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ivan@example.com&quot;</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/components/schemas/Task&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="response-201-created">Response 201 Created</h3>
+<p><strong>application/json</strong></p>
+<p><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Открытие автоматических ворот&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;scenarioId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;deviceId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;completionDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T11:30:45.123000+00:00&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;taskResult&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<em>This example has been generated automatically from the schema and it is not accurate. Refer to the schema for more information.</em></p>
+<p><strong>Schema of the response body</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;userId&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;name&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date-time&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-15T10:30:00Z&quot;</span>
+<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;guid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;761fcfc2-d173-45f6-9ef1-1221d1c590c0&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;guid&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Открытие автоматических ворот&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;example&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;tasks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/components/schemas/Task&quot;</span>
+<span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -274,7 +425,7 @@ Most likely, it is not desirable to edit this file by hand!
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="response-500-internal-server-error_1">Response 500 Internal Server Error</h3>
+<h3 id="response-500-internal-server-error">Response 500 Internal Server Error</h3>
 <p><strong>application/json</strong></p>
 <p><div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
@@ -299,6 +450,43 @@ Most likely, it is not desirable to edit this file by hand!
 </code></pre></div>
 <hr />
 <h2 id="schemas">Schemas</h2>
+<h3 id="device">Device</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>deviceTypeId</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>houseId</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>id</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>locationId</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h3 id="error">Error</h3>
 <table>
 <thead>
@@ -321,7 +509,7 @@ Most likely, it is not desirable to edit this file by hand!
 </tr>
 </tbody>
 </table>
-<h3 id="user">User</h3>
+<h3 id="scenario">Scenario</h3>
 <table>
 <thead>
 <tr>
@@ -332,28 +520,28 @@ Most likely, it is not desirable to edit this file by hand!
 </thead>
 <tbody>
 <tr>
-<td>createdAt</td>
-<td>string(date-time)</td>
-<td></td>
-</tr>
-<tr>
-<td>email</td>
-<td>string(email)</td>
-<td></td>
-</tr>
-<tr>
 <td>id</td>
-<td>integer(int64)</td>
+<td>string(guid)</td>
 <td></td>
 </tr>
 <tr>
 <td>name</td>
-<td>string</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>status</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>tasks</td>
+<td>Array&lt;<a href="#task">Task</a>&gt;</td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<h3 id="userinput">UserInput</h3>
+<h3 id="task">Task</h3>
 <table>
 <thead>
 <tr>
@@ -364,14 +552,34 @@ Most likely, it is not desirable to edit this file by hand!
 </thead>
 <tbody>
 <tr>
-<td>email</td>
-<td>string(email)</td>
-<td>Email пользователя</td>
+<td>completionDate</td>
+<td>string(date-time)</td>
+<td></td>
 </tr>
 <tr>
-<td>name</td>
-<td>string</td>
-<td>Полное имя пользователя</td>
+<td>deviceId</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>id</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>scenarioId</td>
+<td>string(guid)</td>
+<td></td>
+</tr>
+<tr>
+<td>status</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>taskResult</td>
+<td>string(text)</td>
+<td></td>
 </tr>
 </tbody>
 </table></div>
