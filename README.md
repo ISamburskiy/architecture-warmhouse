@@ -61,10 +61,10 @@
 [Диаграмма контейнеров (Containers)](https://github.com/ISamburskiy/architecture-warmhouse/blob/warmhouse/diagrams/TO_BE/container/container.png)
 
 
-[Диаграмма компонентов (Components)](https://github.com/ISamburskiy/architecture-warmhouse/blob/warmhouse/diagrams/TO_BE/component/component.png)
+[Диаграмма компонентов (Components) для MaDService](https://github.com/ISamburskiy/architecture-warmhouse/blob/warmhouse/diagrams/TO_BE/component/component.png)
 
 
-[Диаграмма кода (Code)](https://github.com/ISamburskiy/architecture-warmhouse/blob/warmhouse/diagrams/TO_BE/code/code.png)
+[Диаграмма кода (Code) для AsyncHandler MaDService](https://github.com/ISamburskiy/architecture-warmhouse/blob/warmhouse/diagrams/TO_BE/code/code.png)
 
 
 # Задание 3. Разработка ER-диаграммы
@@ -81,7 +81,7 @@
 
 ### 2. Документация API
 
-[Документация](https://isamburskiy.github.io/architecture-warmhouse/api/)
+[Документация некоторых основных методов REST-API](https://isamburskiy.github.io/architecture-warmhouse/api/)
 
 # Задание 5. Работа с docker и docker-compose
 
