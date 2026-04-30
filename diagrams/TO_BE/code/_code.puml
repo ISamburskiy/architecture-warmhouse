@@ -9,34 +9,20 @@ skinparam ranksep 50
 scale 1.2
 
 title Code Diagram for AsyncHandler (MaD Service)
-LAYOUT_WITH_LEGEND()
-
 
 ' Основной класс обработчика асинхронных сообщений
 class MessageProcessor {
-  - messageQueue: Queue<DeviceMessage>
+  - messageQueue: Queue<ModuleMessage>
   - telemetryService: TelemetryService
   + processIncomingMessage(message: DeviceMessage): ProcessingResult
   + validateMessageFormat(message: String): boolean
   + routeMessageToScenarioEngine(message: DeviceMessage): void
 }
 
-' Сервис для работы с телеметрией
-class TelemetryService {
-  - storage: ITelemetryRepository
-  + saveTelemetryData(data: TelemetryData): void
-  + getRecentTelemetry(deviceId: String, hours: int): List<TelemetryData>
-  + detectAnomalies(data: List<TelemetryData>): AnomalyReport
-}
-
-' Интерфейс репозитория для сохранения телеметрии
-interface ITelemetryRepository {
-  + save(telemetry: TelemetryData): void
-  + findByDeviceId(deviceId: String, from: DateTime, to: DateTime): List<TelemetryData>
-}
 
 ' Модель данных — сообщение от устройства
-class DeviceMessage {
+class ModuleMessage {
+  + moduleId: String
   + deviceId: String
   + timestamp: DateTime
   + payload: Map<String, Object>
@@ -44,24 +30,7 @@ class DeviceMessage {
   + validate(): boolean
 }
 
-' Модель данных — телеметрия
-class TelemetryData {
-  + deviceId: String
-  + sensorType: String
-  + value: double
-  + unit: String
-  + recordedAt: DateTime
-}
-
 ' Связи между классами
-MessageProcessor --> TelemetryService : uses
-MessageProcessor --> DeviceMessage : processes
-TelemetryService --> ITelemetryRepository : implements
-TelemetryService --> TelemetryData : uses
-
-' Невидимые связи для выравнивания элементов на диаграмме
-MessageProcessor -[hidden]right- TelemetryService
-TelemetryService -[hidden]right- ITelemetryRepository
-DeviceMessage -[hidden]down- TelemetryData
+MessageProcessor --> ModuleMessage : processes
 
 @enduml

@@ -34,23 +34,21 @@ Container(Module, "Module", "Operates devices")
 Rel_U(SyncHandler, ScenarioEngine, "Calls Scenario Engine")
 Rel_U(AsyncHandler, ScenarioEngine, "Calls scenario Engine")
 Rel_U(ScenarioEngine, DBAdpater, "Updates scenarios with device data")
-Rel_U(ScenarioEngine, AsyncHandler, "Creates notification request")
 
 ' Внешние связи MaDService
 Rel(CustMobBFF, SyncHandler, "User-initiated tasks / scenarios", "HTTPS/REST")
 Rel(CustWebBFF, SyncHandler, "User-initiated tasks / scenarios", "HTTPS/REST")
-Rel(AsyncHandler, MQBroker, "Sends notification request", "AMQP")
 Rel(MQBroker, AsyncHandler, "Sends module-initiated tasks", "AMQP")
 Rel(ScenarioEngine, Module, "Sends tasks", "HTTPS/REST")
 Rel(Module, MQBroker, "Creates module-initiated tasks", "AMQP")
 Rel(MQBroker, NotificationService, "Sends notification requests", "AMQP")
 Rel(DBAdpater, MaDDB, "Reads/writes scenarios, tasks, device & module data", "JDBC")
+Rel(ScenarioEngine, MQBroker, "Creates notification request")
 
 ' Невидимые связи для улучшения компоновки и уменьшения пересечений
 
 SyncHandler -[hidden]down- ScenarioEngine
-ScenarioEngine -[hidden]down- DBAdpater
-DBAdpater -[hidden]right- AsyncHandler
+ScenarioEngine -[hidden]left- DBAdpater
 CustMobBFF -[hidden]down- CustWebBFF
 CustWebBFF -[hidden]left- SyncHandler
 AsyncHandler -[hidden]right- MQBroker

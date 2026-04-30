@@ -2,7 +2,7 @@
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
 
 left to right direction
-skinparam linetype polyline
+skinparam linetype ortho
 skinparam ArrowColor Black
 skinparam ArrowThickness 2
 skinparam nodesep 120
@@ -15,7 +15,6 @@ LAYOUT_WITH_LEGEND()
 Person(customer, "Customer", "SmartHome customer who monitors and controls modules and devices")
 Person(support, "CustomerSupport", "SmartHome employee, supports customers, manages tickets")
 
-Boundar
 
 System_Boundary(CustApp, "Customer interface applications") {
   Container(CwebApp, "Web Application", "Customer interface for module and devices management")
@@ -61,7 +60,9 @@ BiRel(CustWebBFF, userService, "", "HTTPS/REST")
 BiRel(SuppWebBFF, userService, "", "HTTPS/REST")
 BiRel(CustMobBFF, MaDService, "", "HTTPS/REST")
 BiRel(CustWebBFF, MaDService, "", "HTTPS/REST")
-BiRel(SuppWebBFF, TicketService, "Manage tickets")
+BiRel(SuppWebBFF, TicketService, "Manage tickets", "HTTPS/REST + WebSocket")
+BiRel(CustMobBFF, TicketService, "Manage tickets", "HTTPS/REST + WebSocket")
+BiRel(CustWebBFF, TicketService, "Manage tickets", "HTTPS/REST + WebSocket")
 BiRel(MaDService, ModCl, "Sync interation", "HTTPS/REST")
 Rel(ModCl, MQBroker, "MSG to MaD", "AMQP")
 Rel(MQBroker, MaDService, "MSG from modules to MaD", "AMQP")
@@ -75,6 +76,9 @@ Rel(NotificationService, externalSMS, "")
 Rel(NotificationService, externalEMail, "")
 BiRel(ModCl, device, "interaction")
 
+CustWebBFF --[hidden]down-- SuppWebBFF
+CustMobBFF --[hidden]-- userService
+CustMobBFF --[hidden]-- TicketService
 
 
 @enduml 

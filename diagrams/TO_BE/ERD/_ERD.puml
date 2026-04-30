@@ -1,25 +1,135 @@
-@startuml qwe
+@startuml ER Diagram - Examples of Relationships
+hide circle
+skinparam linetype ortho
+left to right direction
 
-entity "Customer" as C {
-  * id : INT {PK}
+title Entity-Relationship Diagram: Examples of Different Relationship Types
+
+' Сущности с атрибутами
+
+entity "User" as user {
+  *id : GUID <<PK>>
   --
-  * name : VARCHAR
-  * email : VARCHAR
+  userType : int
+  login : string
+  name : string
+  houses : array
 }
 
-entity "Order" as O {
-  * id : INT {PK}
-  * date : DATE
-  * cust_id : INT {FK}
+entity "UserSession" as session {
+  *id : GUID <<PK>>
+  --
+  user : user
+  token : string
+  validTo: datetime2
 }
 
-entity "Product" as P {
-  * id : INT {PK}
-  * name : VARCHAR
-  * price : DECIMAL
+entity "Ticket" as ticket {
+  *id : GUID <<PK>>
+  --
+  initiator : user
+  responsible : user
+  description : text
 }
 
-C ||--o{ O : "places"
-O ||--o{ P : "includes"
+entity "House" as house {
+  *id : GUID <<PK>>
+  --
+  users: array
+  name : string
+}
+
+entity "Location" as location {
+  *id : GUID <<PK>>
+  --
+  house : house
+  name : string
+}
+
+entity "Module" as module {
+  *id : GUID <<PK>>
+  --
+  house : house
+  location : location
+  name : string
+  status : int
+}
+
+entity "DeviceType" as deviceType {
+  *id : GUID <<PK>>
+  --
+  name : string
+}
+
+entity "DeviceTaskType" as taskType {
+  *id : GUID <<PK>>
+  --
+  name : string
+}
+
+entity "Device" as device {
+  *id : GUID <<PK>>
+  --
+  deviceType: deviceType
+  name : string 
+  status : int 
+}
+
+entity "Scenario" as scenario {
+  *id : GUID <<PK>>
+  --
+  user : user (not null if user-initiated)
+  device : device (not null if device-initiated)
+  name : string
+  status : int
+}
+
+entity "DeviceTask" as task {
+  *id : GUID <<PK>>
+  --
+  scenario : scenario
+  device : device
+  taskType : taskType
+  status : int
+  dueDate : datetime2
+  completionDate : datetime2 (null)
+  error: text (null)
+}
+
+entity "UserScenarioTemplates" as scenarioTemplates {
+  *id : GUID <<PK>>
+  --
+  user : user
+  name : string
+  taskTemplates : array
+}
+
+entity "taskTemplates" as taskTemplates {
+  *id : GUID <<PK>>
+  --
+  userScenarioTemplate : scenarioTemplates
+  device : device
+  taskType : taskType
+}
+
+' Типы связей
+
+user }|---|{ house: owns
+house ||---o{location: includes
+house ||--o{module: stores
+location |o---o{module: stores
+module ||--|{device: controls
+deviceType||--o{device: allowsTasks
+deviceType }|--|{taskType : includes
+device ||--o{task: executes
+taskType ||--o{task: classifies
+scenario ||--|{task: includes
+device |o--o{scenario: initiates
+user |o--o{scenario: initiates
+user ||--up--|{session: initiates
+user ||----|{ticket: initiates
+user||----|{ticket: resolves
+user ||--right-o{scenarioTemplates: manages/initiates
+scenarioTemplates ||--|{taskTemplates: includes
 
 @enduml
